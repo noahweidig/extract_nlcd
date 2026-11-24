@@ -7,8 +7,8 @@ test_that("input validation", {
 
 test_that("tile keys cover bbox", {
   g <- sf::st_sfc(sf::st_buffer(sf::st_point(c(1e6, 1.8e6)), 40000), crs = 5070)
-  bb <- extractnlcd:::feature_bboxes(g)
-  expect_true(length(extractnlcd:::tiles_for(bb)) >= 4)
+  bb <- fastnlcd:::feature_bboxes(g)
+  expect_true(length(fastnlcd:::tiles_for(bb)) >= 4)
 })
 
 test_that("live extraction sums to 100%", {

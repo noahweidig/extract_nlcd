@@ -32,7 +32,7 @@ Defaults to row number.}
 \verb{area_<class>} columns (class colors in \code{attr(x, "nlcd_colors")}). Default \code{FALSE} returns long (tidy) format.}
 
 \item{cache_dir}{Directory for cached tiles. Defaults to a persistent user
-cache (\code{tools::R_user_dir("extractnlcd", "cache")}).}
+cache (\code{tools::R_user_dir("fastnlcd", "cache")}).}
 
 \item{chunk_size}{Features per chunk. Lower it if memory is tight.}
 
