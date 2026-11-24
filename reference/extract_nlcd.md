@@ -51,7 +51,7 @@ extract_nlcd(
 - cache_dir:
 
   Directory for cached tiles. Defaults to a persistent user cache
-  (`tools::R_user_dir("extractnlcd", "cache")`).
+  (`tools::R_user_dir("fastnlcd", "cache")`).
 
 - chunk_size:
 

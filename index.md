@@ -1,4 +1,4 @@
-# extractnlcd
+# fastnlcd
 
 Fast per-polygon land cover percent and area from **Annual NLCD** (USGS
 Collection 1.2, CONUS, 1985–2025). One function.
@@ -8,14 +8,14 @@ Collection 1.2, CONUS, 1985–2025). One function.
 ``` r
 
 # install.packages("remotes")
-remotes::install_github("noahweidig/extract_nlcd")
+remotes::install_github("noahweidig/fastnlcd")
 ```
 
 ## Use
 
 ``` r
 
-library(extractnlcd)
+library(fastnlcd)
 
 nc <- sf::st_read(system.file("shape/nc.shp", package = "sf"))
 x <- extract_nlcd(year = 2025, geometry = nc, units = "km2", id = "NAME")

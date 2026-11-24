@@ -6,12 +6,12 @@
       <stop offset="1" stop-color="#14432a"/>
     </linearGradient>
   </defs>
-  <polygon points="120,4 236,71 236,207 120,274 4,207 4,71" fill="url(#bg)" stroke="#d9a441" stroke-width="7"/>
-  <g transform="translate(60,46) scale(5)" fill="none" stroke="#f4f1e6" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+  <polygon points="120,8 230,72 230,206 120,270 10,206 10,72" fill="url(#bg)" stroke="#d9a441" stroke-width="8" stroke-linejoin="round"/>
+  <g transform="translate(62,52) scale(4.8)" fill="none" stroke="#f4f1e6" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
     <path d="M10 10v.2A3 3 0 0 1 8.9 16H5a3 3 0 0 1-1-5.8V10a3 3 0 0 1 6 0Z"/>
     <path d="M7 16v6"/>
     <path d="M13 19v3"/>
     <path d="M12 19h8.3a1 1 0 0 0 .7-1.7L18 14h.3a1 1 0 0 0 .7-1.7L16 9h.2a1 1 0 0 0 .8-1.7L13 3l-1.4 1.5"/>
   </g>
-  <text x="120" y="208" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-weight="700" font-size="30" fill="#f4f1e6">extractnlcd</text>
+  <text x="120" y="214" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-weight="700" font-size="38" letter-spacing="0.5" fill="#f4f1e6">fastnlcd</text>
 </svg>
