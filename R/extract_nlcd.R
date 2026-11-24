@@ -26,7 +26,7 @@
 #' @param wide If `TRUE`, return one row per feature with `pct_<class>` and
 #'   `area_<class>` columns (class colors in `attr(x, "nlcd_colors")`). Default `FALSE` returns long (tidy) format.
 #' @param cache_dir Directory for cached tiles. Defaults to a persistent user
-#'   cache (`tools::R_user_dir("extractnlcd", "cache")`).
+#'   cache (`tools::R_user_dir("fastnlcd", "cache")`).
 #' @param chunk_size Features per chunk. Lower it if memory is tight.
 #' @param cores Worker processes for extraction (forked; Unix/macOS only,
 #'   ignored on Windows). Tiles are always downloaded in parallel.
@@ -49,7 +49,7 @@ extract_nlcd <- function(year, geometry, units = c("ha", "km2", "m2", "acres", "
   if (length(year) != 1L || is.na(year) || year < 1985L || year > 2025L) {
     stop("`year` must be a single year from 1985 to 2025.", call. = FALSE)
   }
-  if (is.null(cache_dir)) cache_dir <- tools::R_user_dir("extractnlcd", "cache")
+  if (is.null(cache_dir)) cache_dir <- tools::R_user_dir("fastnlcd", "cache")
   ydir <- file.path(cache_dir, year)
   dir.create(ydir, recursive = TRUE, showWarnings = FALSE)
 

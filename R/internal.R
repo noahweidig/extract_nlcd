@@ -89,7 +89,7 @@ fetch_tiles <- function(keys, year, dir) {
     res <- curl::multi_download(
       tile_url(keys[need], year), tmp, progress = FALSE,
       multiplex = TRUE, timeout = 300,
-      useragent = "extractnlcd R package"
+      useragent = "fastnlcd R package"
     )
     good <- res$success %in% TRUE & res$status_code %in% 200L &
       vapply(tmp, is_tiff, logical(1))

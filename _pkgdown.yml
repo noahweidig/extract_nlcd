@@ -1,4 +1,4 @@
-url: https://noahweidig.github.io/extract_nlcd/
+url: https://noahweidig.github.io/fastnlcd/
 template:
   bootstrap: 5
   bslib:

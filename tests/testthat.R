@@ -1,3 +1,3 @@
 library(testthat)
-library(extractnlcd)
-test_check("extractnlcd")
+library(fastnlcd)
+test_check("fastnlcd")
