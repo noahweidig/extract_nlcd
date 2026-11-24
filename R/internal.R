@@ -80,27 +80,30 @@ is_tiff <- function(f) {
   identical(m, as.raw(c(0x49, 0x49, 0x2a, 0x00))) || identical(m, as.raw(c(0x4d, 0x4d, 0x00, 0x2a)))
 }
 
-fetch_tiles <- function(keys, year, dir) {
+fetch_tiles <- function(keys, year, dir, batch = 100L, tries = 6L) {
   files <- file.path(dir, paste0(keys, ".tif"))
-  for (attempt in 1:3) {
-    need <- !vapply(files, is_tiff, logical(1))
-    if (!any(need)) return(files)
-    tmp <- paste0(files[need], ".part")
-    res <- curl::multi_download(
-      tile_url(keys[need], year), tmp, progress = FALSE,
-      multiplex = TRUE, timeout = 300,
-      useragent = "fastnlcd R package"
-    )
-    good <- res$success %in% TRUE & res$status_code %in% 200L &
-      vapply(tmp, is_tiff, logical(1))
-    file.rename(tmp[good], files[need][good])
-    unlink(tmp[!good])
-    if (attempt < 3 && any(!good)) Sys.sleep(attempt)
+  for (attempt in seq_len(tries)) {
+    need <- which(!vapply(files, is_tiff, logical(1)))
+    if (!length(need)) return(files)
+    for (b in split(need, ceiling(seq_along(need) / batch))) {
+      tmp <- paste0(files[b], ".part")
+      res <- tryCatch(curl::multi_download(
+        tile_url(keys[b], year), tmp, progress = FALSE,
+        multiplex = TRUE, timeout = 300,
+        useragent = "fastnlcd R package"
+      ), error = function(e) NULL)
+      ok <- if (is.null(res)) rep(FALSE, length(b)) else
+        res$success %in% TRUE & res$status_code %in% 200L
+      good <- ok & vapply(tmp, is_tiff, logical(1))
+      file.rename(tmp[good], files[b][good])
+      unlink(tmp[!good])
+      if (!all(good)) Sys.sleep(min(60, 2^attempt))
+    }
   }
   bad <- !vapply(files, is_tiff, logical(1))
   if (any(bad)) {
-    stop(sum(bad), " NLCD tile(s) failed to download from USGS WCS. ",
-         "Check your connection and that features are in CONUS.", call. = FALSE)
+    stop(sum(bad), " NLCD tile(s) failed to download from USGS WCS after ", tries,
+         " tries. Re-run to resume (downloaded tiles are cached).", call. = FALSE)
   }
   files
 }
