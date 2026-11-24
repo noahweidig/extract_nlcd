@@ -1,0 +1,20 @@
+Package: extractnlcd
+Title: Fast Annual NLCD Land Cover Extraction for Polygons
+Version: 0.1.0
+Authors@R: person("Noah", "Weidig", role = c("aut", "cre"),
+    email = "weidignc@gmail.com")
+Description: One function, extract_nlcd(), that returns per-feature land cover
+    percent and area from the USGS Annual National Land Cover Database
+    (Collection 1.2, 1985-2025). Only the native 30 m tiles each feature
+    touches are fetched from the USGS WCS, in parallel, and cached on disk.
+    Extraction uses exact coverage fractions via exactextractr and runs in
+    spatially sorted chunks so memory stays flat for large layers.
+License: MIT + file LICENSE
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.1
+URL: https://noahweidig.github.io/extract_nlcd/, https://github.com/noahweidig/extract_nlcd
+BugReports: https://github.com/noahweidig/extract_nlcd/issues
+Imports: curl (>= 5.0.0), exactextractr (>= 0.9.0), parallel, sf, stats, terra, tools
+Suggests: testthat (>= 3.0.0)
+Config/testthat/edition: 3

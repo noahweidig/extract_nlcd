@@ -1,2 +1,55 @@
-# extract_nlcd
-One function: extract_nlcd()
+# extractnlcd <img src="man/figures/logo.png" align="right" height="139" alt="extractnlcd logo" />
+
+Fast per-polygon land cover percent and area from **Annual NLCD** (USGS Collection 1.2, CONUS, 1985–2025). One function.
+
+## Install
+
+```r
+# install.packages("remotes")
+remotes::install_github("noahweidig/extract_nlcd")
+```
+
+## Use
+
+```r
+library(extractnlcd)
+
+nc <- sf::st_read(system.file("shape/nc.shp", package = "sf"))
+x <- extract_nlcd(year = 2025, geometry = nc, units = "km2", id = "NAME")
+head(x)
+#>     id year class           description nlcd_color      area       pct
+#> 1 Ashe 2025    11            Open Water    #466B9F  2.927338 0.2573710
+#> 2 Ashe 2025    21 Developed, Open Space    #DEC5C5 81.908640 7.2013907
+#> ...
+```
+
+`geometry` takes an `sf`/`sfc` object, a `terra::SpatVector`, or a path to any vector file (shapefile, GeoPackage, GeoJSON...). `units` is one of `"ha"`, `"km2"`, `"m2"`, `"acres"`, `"mi2"`. Set `wide = TRUE` to get one row per feature.
+
+## Why it's fast
+
+- Downloads only the native 30 m tiles your features touch, from the USGS WCS. Nothing national.
+- Downloads run in parallel over HTTP/2, and tiles are cached on disk. A second run over the same area skips the network.
+- Requests snap to the NLCD grid, so no resampling.
+- Exact pixel coverage fractions in C++ (`exactextractr`).
+- `cores = 4` splits extraction across forked workers (Unix/macOS).
+
+Measured in a 4-core cloud container:
+
+| Job | Time |
+|---|---|
+| 100 NC counties (≈140k km²), cold cache | 41 s |
+| Same, warm cache | 18 s |
+| Same, warm cache, `cores = 4` | 6 s |
+| 20,000 × 500 m buffers across NC, warm cache | 14 s |
+
+## Memory
+
+Features are sorted spatially and run in chunks (`chunk_size`, default 500). Each chunk reads its tiles through a lazy VRT, so a 20,000-feature run stayed near 215 MB of R memory. Lower `chunk_size` if you run tight on RAM.
+
+## Output
+
+Long format: `id`, `year`, `class`, `description`, `nlcd_color`, `area`, `pct`. `nlcd_color` is the official NLCD hex color, so `ggplot2::scale_fill_identity()` works directly. `pct` is the percent of the feature's area that has valid NLCD data. Pixels outside CONUS are excluded.
+
+## Data
+
+[Annual NLCD](https://www.usgs.gov/centers/eros/science/annual-national-land-cover-database), USGS EROS, public domain. Served by the MRLC WCS at `dmsdata.cr.usgs.gov`. Tile access follows the approach in [lulc-downloader](https://github.com/burchfisher/lulc-downloader).

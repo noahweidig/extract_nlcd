@@ -1,0 +1,17 @@
+url: https://noahweidig.github.io/extract_nlcd/
+template:
+  bootstrap: 5
+  bslib:
+    primary: "#2f7d4a"
+    navbar-bg: "#14432a"
+    base_font: {google: "Inter"}
+    code_font: {google: "JetBrains Mono"}
+navbar:
+  bg: primary
+  structure:
+    left: [reference]
+    right: [search, github]
+reference:
+  - title: Extract
+    contents:
+      - extract_nlcd
